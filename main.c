@@ -17,14 +17,13 @@
 */
 
 #include <stdio.h>
-#include <stdbool.h>
-#include <SDL2/SDL.h>
-#include "gl.h"
-#include "3d_math.h"
-#include "camera.h"
+#include <SDL3/SDL.h>
+#include <gl.h>
+#include <3d_math.h>
+#include <camera.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include <stb_image.h>
 
 unsigned int load_texture(char const *path)
 {
@@ -123,7 +122,7 @@ int main()
 {
 	SDL_Window *window;
 	
-	if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
+	if(!SDL_Init(SDL_INIT_VIDEO))
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "ERROR: %s", SDL_GetError());
 		return -1;
@@ -133,7 +132,7 @@ int main()
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 	
-	window = SDL_CreateWindow("Basic BlinnPhong renderer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL);
+	window = SDL_CreateWindow("Basic BlinnPhong renderer", 800, 600, SDL_WINDOW_OPENGL);
 	if(window == NULL)
 	{
 		SDL_LogError(SDL_LOG_CATEGORY_ERROR, "ERROR: %s", SDL_GetError());
@@ -141,7 +140,7 @@ int main()
 		return -1;
 	}
 
-	SDL_SetRelativeMouseMode(SDL_TRUE);
+	SDL_SetWindowRelativeMouseMode(window, true);
 
 	SDL_GLContext context = SDL_GL_CreateContext(window);
 
@@ -251,7 +250,7 @@ int main()
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
 	glBindVertexArray(0);
 
-	unsigned int floor_texture = load_texture("wood floor 2.png");
+	unsigned int floor_texture = load_texture("wood_floor_2.png");
 
 	glUseProgram(shader_program);
 	glUniform1i(glGetUniformLocation(shader_program, "floortexture"), 0);
@@ -271,16 +270,16 @@ int main()
 		last_frame = currentframe;
 		while(SDL_PollEvent(&event))
 		{
-			if(event.type == SDL_KEYDOWN)
+			if(event.type == SDL_EVENT_KEY_DOWN)
 			{
-				if(event.key.keysym.sym == SDLK_ESCAPE)
+				if(event.key.key == SDLK_ESCAPE)
 				{
 					SDL_LogInfo(SDL_LOG_CATEGORY_TEST, "Exiting because you quit using ESCAPE.");
 					playing = false;
 					break;
 				}
 			}
-			if(event.type == SDL_MOUSEMOTION)
+			if(event.type == SDL_EVENT_MOUSE_MOTION)
 			{
 				if(first_mouse)
 				{
@@ -298,7 +297,7 @@ int main()
 
 				camera_freecam(&camera, x_offset, y_offset, 0);
 			}
-			if(event.type == SDL_QUIT)
+			if(event.type == SDL_EVENT_QUIT)
 			{
 				SDL_LogInfo(SDL_LOG_CATEGORY_TEST, "Exiting due to other exit input.");
 				playing = 0;
@@ -337,7 +336,7 @@ int main()
 	glDeleteProgram(shader_program);
 
 	//shutdown
-	SDL_GL_DeleteContext(context);
+	SDL_GL_DestroyContext(context);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
 	return 0;

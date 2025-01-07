@@ -15,8 +15,9 @@
  * - Matheus Klein Schaefer
 */
 
+//because of fminf and fmaxf, but can be removed
 #include <math.h>
-#include "3d_math.h"
+#include <3d_math.h>
 
 #ifndef M_PI
 	#define M_PI 3.14159265358979323846
