@@ -21,7 +21,7 @@
 #ifndef CAMERA
 #define CAMERA
 
-#include "3d_math.h"
+#include <3d_math.h>
 
 typedef struct ts_camera
 {

@@ -26,7 +26,7 @@
 #ifndef THREEDMATH
 #define THREEDMATH
 
-#include <inttypes.h>
+#include <SDL3/SDL_stdinc.h>
 
 typedef float vec2[2];
 typedef float vec3[3];

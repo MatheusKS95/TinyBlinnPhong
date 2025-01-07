@@ -6,3 +6,5 @@ This was based from https://learnopengl.com/Advanced-Lighting/Advanced-Lighting 
 Despite the code overall being MPL, keep in mind shader code is non-commercial, since it was directly based from LearnOpenGL.
 
 Texture is from https://opengameart.org/content/wall-grass-rock-stone-wood-and-dirt-480 by West
+
+It uses SDL 3.1.6 currently, fetched directly from Github by the CMake script.

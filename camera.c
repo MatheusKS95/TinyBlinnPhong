@@ -16,7 +16,7 @@
 */
 
 #include <math.h>
-#include "camera.h"
+#include <camera.h>
 
 static void camera_update(ts_camera *input)
 {
